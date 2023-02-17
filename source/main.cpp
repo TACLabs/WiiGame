@@ -5,7 +5,7 @@
 
 #include "SplashScreen_Sacrebleu_jpg.h"
 
-GRRLIB_texImg *GFX_Background;
+GRRLIB_texImg *GFX_SplashScreenSacrebleu;
 
 int main(int argc, char **argv) {
     // Initialise the Graphics & Video subsystem
@@ -15,20 +15,41 @@ int main(int argc, char **argv) {
     WPAD_Init();
 
     //Load splashscreen
-    GFX_Background = GRRLIB_LoadTextureJPG(SplashScreen_Sacrebleu_jpg);
+    GFX_SplashScreenSacrebleu = GRRLIB_LoadTextureJPG(SplashScreen_Sacrebleu_jpg);
+
+    // Set up fade effect
+    int alpha = 0;
+    bool fading_in = true;
 
     // Loop forever
     while(1) {
 
+        GRRLIB_DrawImg( 0, 0, GFX_SplashScreenSacrebleu, 0, 1, 1, RGBA(255,255,255,alpha));
+
         WPAD_ScanPads();  // Scan the Wiimotes
 
         // If [HOME] was pressed on the first Wiimote, break out of the loop
-        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME)  break;
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_A) {
+            fading_in = false;
+        }
 
         // ---------------------------------------------------------------------
         // Place your drawing code here
-        // ---------------------------------------------------------------------*
-         GRRLIB_DrawImg( 0, 0, GFX_Background, 0, 1, 1, RGBA(255, 255, 255, 255) );
+        // ---------------------------------------------------------------------
+
+
+        // Update alpha value
+        if (fading_in) {
+            alpha += 5;
+            if (alpha >= 255) {
+                alpha = 255;
+            }
+        } else {
+            alpha -= 5;
+            if (alpha <= 0) {
+                alpha = 0;
+            }
+        }
 
         GRRLIB_Render();  // Render the frame buffer to the TV
     }
