@@ -1,13 +1,11 @@
-/*===========================================
-        GRRLIB (GX Version)
-        - Template Code -
-
-        Minimum Code To Use GRRLIB
-============================================*/
 #include <grrlib.h>
 
 #include <stdlib.h>
 #include <wiiuse/wpad.h>
+
+#include "SplashScreen_Sacrebleu_jpg.h"
+
+GRRLIB_texImg *GFX_Background;
 
 int main(int argc, char **argv) {
     // Initialise the Graphics & Video subsystem
@@ -15,6 +13,9 @@ int main(int argc, char **argv) {
 
     // Initialise the Wiimotes
     WPAD_Init();
+
+    //Load splashscreen
+    GFX_Background = GRRLIB_LoadTextureJPG(SplashScreen_Sacrebleu_jpg);
 
     // Loop forever
     while(1) {
@@ -26,7 +27,8 @@ int main(int argc, char **argv) {
 
         // ---------------------------------------------------------------------
         // Place your drawing code here
-        // ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------*
+         GRRLIB_DrawImg( 0, 0, GFX_Background, 0, 1, 1, RGBA(255, 255, 255, 255) );
 
         GRRLIB_Render();  // Render the frame buffer to the TV
     }
